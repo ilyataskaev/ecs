@@ -6,15 +6,11 @@ on:
       - develop
 
   workflow_dispatch:
-    inputs:
-      env:
-        description: 'Environment to deploy. Valid options: sandbox|dev|stage|prod'
-        required: true
-        default: 'dev'
+
 
 env:
   region: 'eu-north-1'
-  file_name: 'cas.war'
+
 
 jobs:
 
