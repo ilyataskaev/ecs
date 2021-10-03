@@ -20,11 +20,7 @@ data "aws_iam_policy_document" "ecs_task_execution_role_policy" {
       "ecr:GetDownloadUrlForLayer",
       "ecr:BatchGetImage",
       "logs:CreateLogStream",
-      "logs:PutLogEvents",
-      "secretsmanager:GetSecretValue",
-      "ssm:GetParameter",
-      "ssm:GetParameters",
-      "kms:Decrypt"
+      "logs:PutLogEvents"
     ]
     resources = [
       "*",
