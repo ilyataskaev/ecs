@@ -1,4 +1,4 @@
-name: ECR Build and Deploy
+name: ECR Docker Build and Deploy
 
 on:
   push:
@@ -14,7 +14,7 @@ env:
 
 jobs:
 
-  maven-build-and-deploy:
+  docker-build-and-deploy:
 
     runs-on: ubuntu-latest
     steps:
