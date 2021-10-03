@@ -36,6 +36,7 @@ jobs:
       env:
         EXEC: ${{ github.event.inputs.action }}
         APP_NAME: ${{ github.event.repository.name }}
+        TF_VAR_app_name: ${{ github.event.repository.name }}
       working-directory: ${{ env.working-directory }}
       run: |
         set -x
