@@ -17,7 +17,7 @@ resource "aws_ecs_service" "ecs_service_lb" {
   count                  = var.use_api_gateway ? 0 : 1
   enable_execute_command = var.enable_execute_command
   depends_on = [
-    aws_lb_listener.public_lb_listener_https,
+    aws_lb_listener.public_lb_listener_http,
     aws_iam_role_policy.ecs_role_policy
   ]
   name                               = var.service
