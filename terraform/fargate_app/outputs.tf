@@ -7,3 +7,6 @@ output "ecr_repo_url" {
 output "log_group_name" {
   value = module.ecs.log_group_name
 }
+output "lb_dns_name" {
+  value = module.ecs.lb_dns_name
+}
