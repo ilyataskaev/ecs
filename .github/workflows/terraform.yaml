@@ -1,9 +1,9 @@
-name: Terraform Plan and Apply
+name: Terraform Plan, Apply or Destroy
 on:
   workflow_dispatch:
      inputs:
       action:
-        description: 'plan or apply'
+        description: 'plan, apply or destroy'
         required: true
         default: 'plan'
 env:
@@ -44,12 +44,19 @@ jobs:
         terraform --version
         terraform init -backend-config "workspace_key_prefix=${APP_NAME}"
         terraform validate
+
         if [[ "${EXEC}" == "plan" ]]
         then
           terraform plan -input=false
         fi
+
         if [[ "${EXEC}" == "apply" ]]
         then
           terraform apply -auto-approve -input=false
+        fi
+
+        if [[ "${EXEC}" == "destroy" ]]
+        then
+          terraform destroy -auto-approve -input=false
         fi
 
