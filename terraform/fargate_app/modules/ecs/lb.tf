@@ -8,36 +8,18 @@ resource "aws_lb" "public_lb" {
 }
 
 resource "aws_lb_listener" "public_lb_listener_http" {
-  count = var.use_api_gateway ? 0 : 1
-  default_action {
-    redirect {
-      host        = "#{host}"
-      path        = "/#{path}"
-      port        = "443"
-      protocol    = "HTTPS"
-      status_code = "HTTP_301"
-    }
-    type = "redirect"
-  }
-
-  load_balancer_arn = aws_lb.public_lb[0].arn
-  port              = "80"
-  protocol          = "HTTP"
-}
-
-resource "aws_lb_listener" "public_lb_listener_https" {
-  count           = var.use_api_gateway ? 0 : var.use_https_listener ? 1 : 0
-
+  count           = var.use_api_gateway ? 0 : 1
   default_action {
     target_group_arn = aws_lb_target_group.service_target_group[0].arn
     type             = "forward"
   }
 
   load_balancer_arn = aws_lb.public_lb[0].arn
-  port              = "443"
-  protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  port              = "80"
+  protocol          = "HTTP"
+
 }
+
 resource "aws_lb_target_group" "service_target_group" {
   count = var.use_api_gateway ? 0 : 1
   health_check {
