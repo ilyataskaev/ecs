@@ -31,7 +31,7 @@ module "ecs" {
   service                        = var.app_name
   cluster_name                   = var.app_name
   public_subnets                 = module.vpc.public_subnets
-  private_subnets                = module.vpc.private_subnets
+  private_subnets                = module.vpc.public_subnets #module.vpc.private_subnets
   use_api_gateway                = var.use_api_gateway
   container_port                 = var.container_port
   container_cpu                  = var.container_cpu
