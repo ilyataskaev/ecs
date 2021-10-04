@@ -15,7 +15,6 @@ resource "aws_ecr_repository_policy" "ecr_repo_policy" {
             "Sid": "AllowPushPull",
             "Effect": "Allow",
             "Principal": "*",
-            },
             "Action": [
                 "ecr:GetDownloadUrlForLayer",
                 "ecr:BatchGetImage",
