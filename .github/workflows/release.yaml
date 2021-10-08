@@ -1,0 +1,59 @@
+name: Release
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - master
+      
+env:
+  region: 'eu-north-1'
+
+jobs:
+  create:
+    if: github.event.pull_request.merged == true && contains(github.head_ref, 'release') || contains(github.head_ref, 'hotfix')
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.GH_ACTIONS_PUSH }}
+
+    - name: retrieve tag name
+      id: tag-name
+      run: |
+        TAG=$(echo "${{ github.head_ref }}" | sed -e 's,.*/\(.*\),\1,')
+        echo "::set-output name=tag::$TAG"
+        
+    - name: git push tag
+      env:
+        TAG: ${{ steps.tag-name.outputs.tag }}
+        GITHUB_TOKEN: ${{ secrets.GH_ACTIONS_PUSH }}
+      run: |
+        git config user.name "${GITHUB_ACTOR}"
+        git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+        git tag -a "${TAG}" -m "PR #${{ github.event.pull_request.number }} ${{ github.event.pull_request.title }}"
+        git push origin "${TAG}"
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.MAX_ITO_AWS_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.MAX_ITO_AWS_SECRET_KEY }}
+        aws-region: ${{ env.region }}
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      env:
+        TAG: ${{ steps.tag-name.outputs.tag }}
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: ${{ github.event.repository.name }}
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY --all-tags
+
+          
