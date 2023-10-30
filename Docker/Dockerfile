@@ -1,13 +1,13 @@
-FROM ubuntu
+FROM alpine:latest
 
-RUN apt-get update; \
-    apt-get install nginx -y 
+RUN apk update && \
+    apk add nginx
 
 RUN mkdir -p /var/www/2048
 COPY ./2048/ /var/www/2048/
 
-RUN rm -f /etc/nginx/sites-enabled/default
-COPY 2048.conf /etc/nginx/sites-enabled/
+RUN rm -f /etc/nginx/http.d/default.conf
+COPY 2048.conf /etc/nginx/http.d/
 
 EXPOSE 80
 
