@@ -65,7 +65,7 @@ jobs:
         then
           terraform destroy -auto-approve -input=false
         fi
-        terraform output -json > output.json
+        terraform output -json | tee output.json
         echo "ecr_repo_url=$(cat output.json | jq .ecr_repo_url.value)" >> $GITHUB_OUTPUT
         echo "lb_dns_name=$(cat output.json | jq .lb_dns_name.value)" >> $GITHUB_OUTPUT
       shell: bash
