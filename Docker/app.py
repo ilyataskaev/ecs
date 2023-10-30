@@ -2,14 +2,16 @@ import os
 import random
 from flask import Flask, render_template_string
 
-COLOR = os.environ.get('COLOR', 'green')
-
 app = Flask(__name__)
 
 @app.route('/')
 def index():
     container_id = os.popen('hostname').read().strip()
-
+    random_color = "#{:06x}".format(random.randint(0, 0xFFFFFF))
+    if 'COLOR' in os.environ:
+      COLOR = os.environ.get('COLOR')
+    else:
+      COLOR = random_color
     template = """
     <html>
         <head>
