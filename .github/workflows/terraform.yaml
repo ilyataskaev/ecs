@@ -25,17 +25,6 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@master
 
-    - name: Run Terraform
-      id: terraform
-      uses: ilyataskaev/terraform-action@main
-      with:
-        action: ${{ github.event.inputs.action }}
-        app-name: ${{ github.event.repository.name }}
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-        aws-region: ${{ env.region }}
-        working-directory: ${{ env.working-directory }}
-
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
