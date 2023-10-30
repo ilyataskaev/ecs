@@ -1,11 +1,17 @@
 ## Terraform
 To run this example execute terraform:
 
+Add Secrets to  GitHub:
+
+```
+AWS_ACCESS_KEY
+AWS_SECRET_KEY
+```
+
 ```sh
 cd terraform
-export APP_NAME=interns-party
 export TF_VAR_app_name=interns-party
-terraform init -backend-config "workspace_key_prefix=${APP_NAME}"
+terraform init -backend-config "workspace_key_prefix=${TF_VAR_app_name}"
 terraform apply
 ```
 
