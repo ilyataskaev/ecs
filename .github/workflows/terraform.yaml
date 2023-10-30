@@ -26,6 +26,7 @@ jobs:
       uses: actions/checkout@master
 
     - name: Run Terraform
+      id: terraform
       uses: ilyataskaev/terraform-action@main
       with:
         action: ${{ github.event.inputs.action }}
@@ -34,3 +35,5 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
         aws-region: ${{ env.region }}
         working-directory: ${{ env.working-directory }}
+
+    - sh: echo "::notice ::${{ steps.terraform.output.terraform_output}}"
