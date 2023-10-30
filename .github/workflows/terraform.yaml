@@ -36,6 +36,52 @@ jobs:
         aws-region: ${{ env.region }}
         working-directory: ${{ env.working-directory }}
 
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+        aws-region: ${{ env.region }}
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.0.x
+
+    - name: Execute Terraform
+      id: terraform
+      env:
+        EXEC: ${{ github.event.inputs.action }}
+        APP_NAME: ${{ github.event.repository.name }}
+        TF_VAR_app_name: ${{ github.event.repository.name }}
+      working-directory: ${{ env.working-directory }}
+      run: |
+        set -x
+        set -e
+        terraform --version
+        terraform init -backend-config "workspace_key_prefix=${APP_NAME}"
+        terraform validate
+
+        if [[ "${EXEC}" == "plan" ]]
+        then
+          terraform plan -input=false
+        fi
+
+        if [[ "${EXEC}" == "apply" ]]
+        then
+          terraform apply -auto-approve -input=false
+        fi
+
+        if [[ "${EXEC}" == "destroy" ]]
+        then
+          terraform destroy -auto-approve -input=false
+        fi
+        terraform output -json > output.json
+        echo "ecr_repo_url=$(cat output.json | jq .ecr_repo_url.value)" >> $GITHUB_OUTPUT
+        echo "lb_dns_name=$(cat output.json | jq .lb_dns_name.value)" >> $GITHUB_OUTPUT
+      shell: bash
+
+
     - run: |
         echo "::warning ::ecr_repo_url: ${{ steps.terraform.output.ecr_repo_url}}"
         echo "::warning ::lb_dns_name: ${{ steps.terraform.output.lb_dns_name}}"
