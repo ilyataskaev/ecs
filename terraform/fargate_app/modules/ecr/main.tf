@@ -1,5 +1,6 @@
 resource "aws_ecr_repository" "ecr_repo" {
   name = var.repo_name
+  force_delete = true
   tags = merge(var.common_tags, var.tags)
 }
 
