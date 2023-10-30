@@ -1,15 +1,12 @@
-FROM alpine:latest
+FROM python:3.8-slim
 
-RUN apk update && \
-    apk add nginx
+WORKDIR /app
 
-RUN mkdir -p /var/www/2048
-COPY ./2048/ /var/www/2048/
+COPY requirements.txt requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN rm -f /etc/nginx/http.d/default.conf
-COPY 2048.conf /etc/nginx/http.d/
+COPY app.py app.py
 
-EXPOSE 80
+EXPOSE 5000
 
-ENTRYPOINT ["nginx"]
-CMD ["-g","daemon off;"]
+CMD ["python", "app.py"]

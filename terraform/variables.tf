@@ -1,6 +1,6 @@
 variable "container_port" {
   type    = number
-  default = 80
+  default = 5000
 }
 variable "app_name" {
   type    = string
