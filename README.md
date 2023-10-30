@@ -10,8 +10,8 @@ AWS_SECRET_KEY
 
 ```sh
 cd terraform
-export TF_VAR_app_name=interns-party
-terraform init -backend-config "workspace_key_prefix=${TF_VAR_app_name}"
+export TF_VAR_app_name=ecs
+terraform init
 terraform apply
 ```
 
