@@ -71,6 +71,7 @@ jobs:
         echo "lb_dns_name=$(cat output.json | jq .lb_dns_name.value)" >> $GITHUB_OUTPUT
       shell: bash
 
-    - run: |
+    - name: Make annotations
+      run: |
         echo "::warning ::ecr_repo_url: ${{ steps.terraform.outputs.ecr_repo_url}}"
         echo "::warning ::lb_dns_name: ${{ steps.terraform.outputs.lb_dns_name}}"
