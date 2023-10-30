@@ -3,9 +3,14 @@ on:
   workflow_dispatch:
      inputs:
       action:
-        description: 'plan, apply or destroy'
+        description: 'Action to choose for terraform'
         required: true
         default: 'plan'
+        type: choice
+        options:
+          - plan
+          - apply
+          - destroy
 env:
   region: 'eu-north-1'
   working-directory: './terraform'
@@ -16,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-  
+
     - name: Checkout Repository
       uses: actions/checkout@master
 
