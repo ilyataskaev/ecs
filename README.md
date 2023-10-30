@@ -9,11 +9,19 @@ terraform init -backend-config "workspace_key_prefix=${APP_NAME}"
 terraform apply
 ```
 
+Deploy locally
+
+(Article)[https://docs.aws.amazon.com/AmazonECR/latest/userguide/getting-started-cli.html]
+
+```
+aws ecr get-login-password --region region | docker login --username AWS --password-stdin aws_account_id.dkr.ecr.region.amazonaws.com
+```
 ## 2048
 
 To build and run this docker container locally:
 
 ```sh
-docker build -t 2048:0.1 .
-docker run -p 8080:80 -d --name 2048 2048:0.1
+cd docker
+docker build -t aws_account_id.dkr.ecr.region.amazonaws.com/interns-party:latest .
+docker push 385379752235.dkr.ecr.eu-north-1.amazonaws.com/interns-party:latest
 ```
