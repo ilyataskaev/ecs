@@ -36,4 +36,4 @@ jobs:
         aws-region: ${{ env.region }}
         working-directory: ${{ env.working-directory }}
 
-    - sh: echo "::notice ::${{ steps.terraform.output.terraform_output}}"
+    - run: echo "::notice ::${{ steps.terraform.output.terraform_output}}"
