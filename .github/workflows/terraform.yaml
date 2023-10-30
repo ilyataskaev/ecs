@@ -36,4 +36,6 @@ jobs:
         aws-region: ${{ env.region }}
         working-directory: ${{ env.working-directory }}
 
-    - run: echo "::notice ::${{ steps.terraform.output.terraform_output}}"
+    - run: |
+        echo "::warning ::ecr_repo_url: ${{ steps.terraform.output.ecr_repo_url}}"
+        echo "::warning ::lb_dns_name: ${{ steps.terraform.output.lb_dns_name}}"
