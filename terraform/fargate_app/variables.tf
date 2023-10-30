@@ -1,12 +1,3 @@
-variable "workspace_iam_roles" {
-  type = map(string)
-  default = {
-    sandbox = "arn:aws:iam::862906408407:role/maxdigital-terraform-role"
-    dev     = "arn:aws:iam::899639894121:role/maxdigital-terraform-role"
-    stage   = "arn:aws:iam::209591047112:role/maxdigital-terraform-role"
-    prod    = "arn:aws:iam::840741539732:role/maxdigital-terraform-role"
-  }
-}
 variable "container_port" {
   type    = number
   default = 80
